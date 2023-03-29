@@ -1,0 +1,9 @@
+.container {
+    width: 800px;
+    height: 800px;
+    border: 0.1rem solid #00daff;
+    border-radius: 0.7em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
