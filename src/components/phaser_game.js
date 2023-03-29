@@ -9,7 +9,7 @@ let _score = 0;
 let _scoreText = "";
 let _gameOver = false;
 let _gameOverCallback = null;
-let _audio = null;
+let _sound = null;
 let _gameStartTimestamp = null;
 let _gameOverTimestamp = null;
 let _gameTimer = null;
@@ -25,15 +25,15 @@ function preload() {
     frameWidth: 32,
     frameHeight: 48,
   });
-  // this.load.audio("Game-Music", "assets/audio/level-1.mp3");
+  this.load.audio("bg_during_play", ["assets/musics/during_play.mp3"]);
 }
 
 function create() {
   _gameStartTimestamp = Date.now();
 
   // Add a background music
-  //_audio = this.sound.add("Game-Music", { loop: true });
-  //_audio.play();
+  _sound = this.sound.add("bg_during_play", { loop: true });
+  _sound.play();
 
   //  A simple background for our game
   this.add.image(400, 300, "sky");
@@ -208,8 +208,8 @@ function hitBomb(player, bomb) {
     _gameTimer.stop();
   }
 
-  if (_audio !== null) {
-    _audio.stop();
+  if (_sound !== null) {
+    _sound.stop();
   }
 
   if (_gameOverCallback !== null) {
