@@ -1,12 +1,18 @@
 import "@/styles/globals.css";
-import { ThemeProvider } from "@mui/material";
+import { ThemeProvider, createTheme } from "@mui/material";
 import type { AppProps } from "next/app";
 
-import { theme } from "../lib/mui_theme";
+const muiTheme = createTheme({
+  palette: {
+    primary: {
+      main: "#ff28c6",
+    },
+  },
+});
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={muiTheme}>
       <Component {...pageProps} />
     </ThemeProvider>
   );
