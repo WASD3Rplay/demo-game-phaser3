@@ -216,7 +216,7 @@ function hitBomb(player, bomb) {
     _gameOverCallback({
       score: _score,
       bombCount: _bombs.children.size,
-      playtime: _gameOverTimestamp - _gameOverTimestamp,
+      playtime: _gameOverTimestamp - _gameStartTimestamp,
     });
   }
 }
