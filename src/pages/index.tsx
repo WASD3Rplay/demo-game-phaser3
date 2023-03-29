@@ -8,8 +8,14 @@ import HomeCenterLayout from "@/components/home_center_layout";
 import Login from "@/components/login";
 import StartGame from "@/components/start_game";
 import Game from "@/components/game";
-import { GameStatus } from "@/lib/game_status";
 import styles from "@/styles/Home.module.css";
+
+export enum GameStatus {
+  NEED_LOGIN = 0,
+  BEFORE_GAME_START = 1,
+  GAME_STARED = 2,
+  GAME_OVER = 3,
+}
 
 const inter = Inter({ subsets: ["latin"] });
 
