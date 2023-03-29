@@ -3,13 +3,13 @@ import Head from "next/head";
 import Image from "next/image";
 import Script from "next/script";
 import React, { useEffect, useState } from "react";
+
 import HomeCenterLayout from "@/components/home_center_layout";
 import Login from "@/components/login";
 import StartGame from "@/components/start_game";
 import Game from "@/components/game";
+import { GameStatus } from "@/controllers/game_status";
 import styles from "@/styles/Home.module.css";
-
-import { GameStatus } from "../controllers/game_status";
 
 const inter = Inter({ subsets: ["latin"] });
 
