@@ -1,7 +1,7 @@
 import "@/styles/globals.css";
 import { ThemeProvider } from "@mui/material";
 import type { AppProps } from "next/app";
-import { theme } from "@/controllers/mui_theme";
+import { theme } from "@/lib/mui_theme";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (

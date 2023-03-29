@@ -8,7 +8,7 @@ import HomeCenterLayout from "@/components/home_center_layout";
 import Login from "@/components/login";
 import StartGame from "@/components/start_game";
 import Game from "@/components/game";
-import { GameStatus } from "@/controllers/game_status";
+import { GameStatus } from "@/lib/game_status";
 import styles from "@/styles/Home.module.css";
 
 const inter = Inter({ subsets: ["latin"] });
