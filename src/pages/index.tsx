@@ -1,15 +1,15 @@
+import { Inter } from "next/font/google";
 import Head from "next/head";
 import Image from "next/image";
-import { Inter } from "next/font/google";
-import styles from "@/styles/Home.module.css";
+import Script from "next/script";
+import React, { useEffect, useState } from "react";
 import HomeCenterLayout from "@/components/home_center_layout";
-import React, { useCallback, useEffect, useState } from "react";
 import Login from "@/components/login";
 import StartGame from "@/components/start_game";
-import Script from "next/script";
 import Game from "@/components/game";
+import styles from "@/styles/Home.module.css";
 
-import { GameStatus } from "../controllers/gameStatus";
+import { GameStatus } from "../controllers/game_status";
 
 const inter = Inter({ subsets: ["latin"] });
 
