@@ -30,8 +30,17 @@ export default function Home() {
 
   const handleLoginButtonClick = () => {
     setDesc('Please click the "Start Game" button 🚀');
-    setGameStatus(GameStatus.BEFORE_GAME_START);
-
+    
+    if (window?.w3r) {
+      window.w3r.send("toggleLogin", {
+        onLoginSuccess: (user:any) => {
+          console.log("Login Success!")
+          setGameStatus(GameStatus.BEFORE_GAME_START);
+        },
+      });
+    } else {
+      console.log("w3r not initialized");
+    }
     // TODO: need to login by SDK
   };
 
@@ -39,6 +48,14 @@ export default function Home() {
     setDesc("Please enjoy the game 🍹");
     setGameStatus(GameStatus.GAME_STARED);
   };
+
+  const handleTogglePortfolio = () => {
+    if (window?.w3r) {
+      window.w3r.send("togglePortfolio");
+    } else {
+      console.log("w3r not initialized");
+    }
+  }
 
   useEffect(() => {
     console.debug("Game Status in Store:", gameStatus);
@@ -132,10 +149,8 @@ export default function Home() {
           </a>
 
           <a
-            href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+            onClick={handleTogglePortfolio}
             className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
           >
             <h2 className={inter.className}>
               👑 Wallet Profile <span>-&gt;</span>

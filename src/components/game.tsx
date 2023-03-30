@@ -21,6 +21,7 @@ import { useRouter } from "next/router";
 declare global {
   interface Window {
     Phaser: any;
+    w3r: any;
   }
 }
 
@@ -118,7 +119,7 @@ export default function Game({}: GameProps) {
             backgroundColor: "#0b1e61",
             padding: 1.2,
             zIndex: "modal",
-            position: "fixed",
+            position: "absolute",
           }}
         >
           <List>
