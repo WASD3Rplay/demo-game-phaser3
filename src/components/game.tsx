@@ -16,6 +16,8 @@ import {
 import SportsScoreIcon from "@mui/icons-material/SportsScore";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import TimerIcon from "@mui/icons-material/Timer";
+import VolumeUpIcon from "@mui/icons-material/VolumeUp";
+import VolumeOffIcon from "@mui/icons-material/VolumeOff";
 import { useRouter } from "next/router";
 
 declare global {
@@ -39,18 +41,11 @@ export default function Game({}: GameProps) {
   const router = useRouter();
 
   const [isGameOver, setIsGameOver] = useState<boolean>(false);
+  const [isGameSoundMute, setIsGameSoundMute] = useState<boolean>(false);
   const [gameResult, setGameResult] = useState<GameResult | null>(null);
-  /*
-  const [isGameOver, setIsGameOver] = useState<boolean>(true);
-  const [gameResult, setGameResult] = useState<GameResult | null>({
-    score: 100,
-    bombCount: 10,
-    playtime: 1000,
-  });
-  */
 
   const handleGameOverCallback = (result: GameResult): void => {
-    // Send Txn to save the game result.
+    // TODO: Send Txn to save the game result.
 
     setIsGameOver(true);
     setGameResult(result);
@@ -58,6 +53,16 @@ export default function Game({}: GameProps) {
   const clearGame = (): void => {
     _game.destroy(true, false);
     PhaserGame.destroyGame();
+  };
+
+  const handleOnClickSoundMute = (): void => {
+    setIsGameSoundMute(true);
+    PhaserGame.muteSound();
+  };
+
+  const handleOnClickSoundUnmute = (): void => {
+    setIsGameSoundMute(false);
+    PhaserGame.unmuteSound();
   };
 
   const handleOnClickLetsRock = (): void => {
@@ -110,99 +115,112 @@ export default function Game({}: GameProps) {
   }, []);
 
   return (
-    <div id="div-game-board" className={styles.container}>
-      {isGameOver && gameResult !== null ? (
-        <Box
-          sx={{
-            width: 360,
-            borderRadius: 2,
-            backgroundColor: "#0b1e61",
-            padding: 1.2,
-            zIndex: "modal",
-            position: "absolute",
-          }}
-        >
-          <List>
-            <ListItem>
-              <h1>Game Result</h1>
-            </ListItem>
-            <ListItem>
-              <p>Your game result is stored in the blockchain </p>
-            </ListItem>
-            <ListItem></ListItem>
-            <ListItem>
-              <ListItemAvatar>
-                <Avatar sx={{ backgroundColor: "#ff28c6ff" }}>
-                  <SportsScoreIcon style={{ color: "#83ff6a" }} />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText primary="Score:" />
-              <ListItemSecondaryAction>
-                <Button
-                  variant="text"
-                  style={{ fontSize: "32px", color: "#00daff" }}
-                >
-                  {gameResult.score}
-                </Button>
-              </ListItemSecondaryAction>
-            </ListItem>
-            <ListItem>
-              <ListItemAvatar>
-                <Avatar sx={{ backgroundColor: "#ff28c6ff" }}>
-                  <AutoAwesomeIcon style={{ color: "#83ff6a" }} />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText primary="Level:" />
-              <ListItemSecondaryAction>
-                <Button
-                  variant="text"
-                  style={{ fontSize: "32px", color: "#00daff" }}
-                >
-                  {gameResult.bombCount}
-                </Button>
-              </ListItemSecondaryAction>
-            </ListItem>
-            <ListItem>
-              <ListItemAvatar>
-                <Avatar sx={{ backgroundColor: "#ff28c6ff" }}>
-                  <TimerIcon style={{ color: "#83ff6a" }} />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText primary="Play Time:" />
-              <ListItemSecondaryAction>
-                <Button
-                  variant="text"
-                  style={{ fontSize: "32px", color: "#00daff" }}
-                >
-                  {PhaserGame.getPlaytimeText(gameResult.playtime)}
-                </Button>
-              </ListItemSecondaryAction>
-            </ListItem>
-          </List>
-          {/*
+    <Box>
+      <div id="div-game-board" className={styles.container}>
+        {isGameOver && gameResult !== null ? (
+          <Box
+            sx={{
+              width: 360,
+              borderRadius: 2,
+              backgroundColor: "#0b1e61",
+              padding: 1.2,
+              zIndex: "modal",
+              position: "absolute",
+            }}
+          >
+            <List>
+              <ListItem>
+                <h1>Game Result</h1>
+              </ListItem>
+              <ListItem>
+                <p>Your game result is stored in the blockchain </p>
+              </ListItem>
+              <ListItem></ListItem>
+              <ListItem>
+                <ListItemAvatar>
+                  <Avatar sx={{ backgroundColor: "#ff28c6ff" }}>
+                    <SportsScoreIcon style={{ color: "#83ff6a" }} />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText primary="Score:" />
+                <ListItemSecondaryAction>
+                  <Button
+                    variant="text"
+                    style={{ fontSize: "32px", color: "#00daff" }}
+                  >
+                    {gameResult.score}
+                  </Button>
+                </ListItemSecondaryAction>
+              </ListItem>
+              <ListItem>
+                <ListItemAvatar>
+                  <Avatar sx={{ backgroundColor: "#ff28c6ff" }}>
+                    <AutoAwesomeIcon style={{ color: "#83ff6a" }} />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText primary="Level:" />
+                <ListItemSecondaryAction>
+                  <Button
+                    variant="text"
+                    style={{ fontSize: "32px", color: "#00daff" }}
+                  >
+                    {gameResult.bombCount}
+                  </Button>
+                </ListItemSecondaryAction>
+              </ListItem>
+              <ListItem>
+                <ListItemAvatar>
+                  <Avatar sx={{ backgroundColor: "#ff28c6ff" }}>
+                    <TimerIcon style={{ color: "#83ff6a" }} />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText primary="Play Time:" />
+                <ListItemSecondaryAction>
+                  <Button
+                    variant="text"
+                    style={{ fontSize: "32px", color: "#00daff" }}
+                  >
+                    {PhaserGame.getPlaytimeText(gameResult.playtime)}
+                  </Button>
+                </ListItemSecondaryAction>
+              </ListItem>
+            </List>
+            {/*
           <hr style={{ margin: "20px 0" }} />
           */}
-          <div style={{ margin: "20px 0" }}>
-            {/*
+            <div style={{ margin: "20px 0" }}>
+              {/*
             <h2 style={{ padding: "10px 0 20px 0", textAlign: "center" }}>
               One more round?
             </h2>
             */}
-            <Stack direction="column" spacing={2}>
-              {/*
+              <Stack direction="column" spacing={2}>
+                {/*
               <Button variant="contained" onClick={handleOnClickLetsRock}>
                 Let&apos;s Rock
               </Button>
               */}
-              <Button variant="outlined" onClick={handleOnClickShowTheCat}>
-                Show me the Cat
-              </Button>
-            </Stack>
-          </div>
-        </Box>
-      ) : (
-        <></>
-      )}
-    </div>
+                <Button variant="outlined" onClick={handleOnClickShowTheCat}>
+                  Show me the Cat
+                </Button>
+              </Stack>
+            </div>
+          </Box>
+        ) : (
+          <></>
+        )}
+      </div>
+      <Box sx={{ textAlign: "end", margin: "20px" }}>
+        {isGameSoundMute ? (
+          <Button onClick={handleOnClickSoundUnmute}>
+            <VolumeOffIcon sx={{ color: "white" }} />
+          </Button>
+        ) : (
+          <Button onClick={handleOnClickSoundMute}>
+            <VolumeUpIcon sx={{ color: "white" }} />
+          </Button>
+        )}
+      </Box>
+    </Box>
   );
 }

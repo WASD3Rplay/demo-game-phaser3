@@ -15,6 +15,7 @@ let _gameOverTimestamp = null;
 let _gameTimer = null;
 let _playTimeText = "";
 let _gameScene = null;
+let _isSoundMute = false;
 
 function preload() {
   this.load.image("sky", "/assets/sky.png");
@@ -161,6 +162,13 @@ function update() {
   // Set playtime
   let playtime = Date.now() - _gameStartTimestamp;
   _playTimeText.setText(getPlaytimeText(playtime));
+
+  // handle sound mute
+  if (_isSoundMute) {
+    _sound.pause();
+  } else {
+    _sound.resume();
+  }
 }
 
 function createBomb(player) {
@@ -209,7 +217,14 @@ function hitBomb(player, bomb) {
   }
 
   if (_sound !== null) {
-    _sound.stop();
+    const tween = this.tweens.add({
+      targets: _sound,
+      volume: 0,
+      duration: 500,
+      onComplete: () => {
+        _sound.stop();
+      },
+    });
   }
 
   if (_gameOverCallback !== null) {
@@ -232,10 +247,18 @@ function destroyGame() {
   }
 
   _gameScene.restart();
-  */
   if (_input !== null) {
     _input.removeAllListeners();
   }
+  */
+}
+
+function muteSound() {
+  _isSoundMute = true;
+}
+
+function unmuteSound() {
+  _isSoundMute = false;
 }
 
 const PhaserGame = {
@@ -245,6 +268,8 @@ const PhaserGame = {
   setGameOverCallback,
   getPlaytimeText,
   destroyGame,
+  muteSound,
+  unmuteSound,
 };
 
 export default PhaserGame;

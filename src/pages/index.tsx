@@ -148,10 +148,7 @@ export default function Home() {
             </p>
           </a>
 
-          <a
-            onClick={handleTogglePortfolio}
-            className={styles.card}
-          >
+          <a onClick={handleTogglePortfolio} className={styles.card}>
             <h2 className={inter.className}>
               👑 Wallet Profile <span>-&gt;</span>
             </h2>
