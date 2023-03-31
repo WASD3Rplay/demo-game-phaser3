@@ -30,16 +30,17 @@ export default function Home() {
 
   const handleLoginButtonClick = () => {
     setDesc('Please click the "Start Game" button 🚀');
-    
+
     if (window?.w3r) {
       window.w3r.send("toggleLogin", {
-        onLoginSuccess: (user:any) => {
-          console.log("Login Success!")
+        onLoginSuccess: (user: any) => {
+          console.log("Login Success!");
           setGameStatus(GameStatus.BEFORE_GAME_START);
         },
       });
     } else {
       console.log("w3r not initialized");
+      alert("Wooooooooops! 'wasd3r' is not initialized.");
     }
     // TODO: need to login by SDK
   };
@@ -54,7 +55,7 @@ export default function Home() {
   };
 
   const handleOnClickGameHistory = () => {
-    alert("I would show you the Game History! The name is TBD!!!");
+    alert("I would show you the Game History! Work in progress!!!");
   };
 
   const handleTogglePortfolio = () => {
