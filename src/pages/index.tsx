@@ -49,13 +49,26 @@ export default function Home() {
     setGameStatus(GameStatus.GAME_STARED);
   };
 
+  const handleOnClickRankBoard = () => {
+    alert("I would show you the Rank Board! The name is TBD!!!");
+  };
+
+  const handleOnClickGameHistory = () => {
+    alert("I would show you the Game History! The name is TBD!!!");
+  };
+
   const handleTogglePortfolio = () => {
+    if (gameStatus === GameStatus.NEED_LOGIN) {
+      alert('Please click "Start with Wasd3r Wallet" first~meow~!');
+      return;
+    }
+
     if (window?.w3r) {
       window.w3r.send("togglePortfolio");
     } else {
       console.log("w3r not initialized");
     }
-  }
+  };
 
   useEffect(() => {
     console.debug("Game Status in Store:", gameStatus);
@@ -122,7 +135,7 @@ export default function Home() {
 
         <div className={styles.grid}>
           <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+            onClick={handleOnClickRankBoard}
             className={styles.card}
             target="_blank"
             rel="noopener noreferrer"
@@ -135,7 +148,7 @@ export default function Home() {
             </p>
           </a>
           <a
-            href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+            onClick={handleOnClickGameHistory}
             className={styles.card}
             target="_blank"
             rel="noopener noreferrer"
@@ -148,14 +161,19 @@ export default function Home() {
             </p>
           </a>
 
-          <a onClick={handleTogglePortfolio} className={styles.card}>
+          <a
+            onClick={handleTogglePortfolio}
+            className={styles.card}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <h2 className={inter.className}>
-              👑 Wallet Profile <span>-&gt;</span>
+              👑 Wallet Portfolio <span>-&gt;</span>
             </h2>
             <p className={inter.className}>Check out coins you earned.</p>
           </a>
           <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+            href="https://wasd3r.xyz/beta"
             className={styles.card}
             target="_blank"
             rel="noopener noreferrer"
