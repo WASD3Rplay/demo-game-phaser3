@@ -51,11 +51,11 @@ export default function Home() {
   };
 
   const handleOnClickRankBoard = () => {
-    alert("I would show you the Rank Board! The name is TBD!!!");
+    alert("I would show you the Rank Board later! Work in progress!!!");
   };
 
   const handleOnClickGameHistory = () => {
-    alert("I would show you the Game History! Work in progress!!!");
+    alert("I would show you the Game History later! Work in progress!!!");
   };
 
   const handleTogglePortfolio = () => {
