@@ -32,9 +32,8 @@ export default function Home() {
     setDesc('Please click the "Start Game" button 🚀');
     
     if (window?.w3r) {
-      window.w3r.send("toggleLogin", {
-        onLoginSuccess: (user:any) => {
-          console.log("Login Success!")
+      window.w3r.send("login", {
+        onLoginSuccess: (email:string, profileImg:string) => {
           setGameStatus(GameStatus.BEFORE_GAME_START);
         },
       });
