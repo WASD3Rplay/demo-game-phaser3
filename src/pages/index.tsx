@@ -3,83 +3,92 @@ import Head from "next/head";
 import Image from "next/image";
 import Script from "next/script";
 import React, { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
 
+import { pageStatusAtom } from "@/atoms/gameStatusAtom";
+import Game from "@/components/game";
 import HomeCenterLayout from "@/components/home_center_layout";
 import Login from "@/components/login";
 import StartGame from "@/components/start_game";
-import Game from "@/components/game";
 import styles from "@/styles/Home.module.css";
-
-export enum GameStatus {
-  NEED_LOGIN = 0,
-  BEFORE_GAME_START = 1,
-  GAME_STARED = 2,
-  GAME_OVER = 3,
-}
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
-  const [gameStatus, setGameStatus] = useState<GameStatus>(
-    GameStatus.NEED_LOGIN
-  );
-  const [desc, setDesc] = useState<string>(
-    "Please login to start the new game!"
-  );
-  const [centerComponent, setCenterComponent] = useState<React.ReactNode>();
+  const [pageStatus, setPageStatus] = useRecoilState(pageStatusAtom);
+
+  const [desc, setDesc] = useState<string>("");
 
   const handleLoginButtonClick = () => {
-    setDesc('Please click the "Start Game" button 🚀');
-    
-    if (window?.w3r) {
-      window.w3r.send("login", {
-        onLoginSuccess: (email:string, profileImg:string) => {
-          setGameStatus(GameStatus.BEFORE_GAME_START);
-        },
-      });
-    } else {
-      console.log("w3r not initialized");
+    try {
+      if (window?.w3r) {
+        window.w3r.send("login", {
+          onLoginSuccess: (email:string, profileImg:string) => {
+            console.log("Login Success!");
+            setPageStatus("ready_to_game");
+          },
+        });
+      } else {
+        console.log("w3r not initialized");
+        alert("Wooooooooops! 'wasd3r' is not initialized.");
+      }
+    } catch (error) {
+      console.error(error);
     }
-    // TODO: need to login by SDK
+
+    if (process.env.NODE_ENV === "development") {
+      setPageStatus("ready_to_game");
+    }
   };
 
   const handleStartGameButtonClick = () => {
-    setDesc("Please enjoy the game 🍹");
-    setGameStatus(GameStatus.GAME_STARED);
+    setPageStatus("playing_game");
+  };
+
+  const handleOnClickRankBoard = () => {
+    alert("I would show you the Rank Board later! Work in progress!!!");
+  };
+
+  const handleOnClickGameHistory = () => {
+    alert("I would show you the Game History later! Work in progress!!!");
   };
 
   const handleTogglePortfolio = () => {
+    if (pageStatus === "before_login") {
+      alert('Please click "Start with Wasd3r Wallet" first~meow~!');
+      return;
+    }
+
     if (window?.w3r) {
       window.w3r.send("togglePortfolio");
     } else {
       console.log("w3r not initialized");
     }
-  }
+  };
 
   useEffect(() => {
-    console.debug("Game Status in Store:", gameStatus);
+    // Save the current page status to local storage whenever it changes
+    localStorage.setItem("pageStatus", pageStatus);
 
-    switch (gameStatus) {
-      case GameStatus.NEED_LOGIN:
-        setCenterComponent(
-          <Login handleButtonClick={handleLoginButtonClick} />
-        );
+    switch (pageStatus) {
+      case "before_login":
+        setDesc("Please login to start the new game!");
         break;
 
-      case GameStatus.BEFORE_GAME_START:
-        setCenterComponent(
-          <StartGame handleButtonClick={handleStartGameButtonClick} />
-        );
+      case "ready_to_game":
+        setDesc('Please click the "Start Game" button 🚀');
         break;
 
-      case GameStatus.GAME_STARED:
-        setCenterComponent(<Game />);
+      case "playing_game":
+        setDesc("Please enjoy the game 🍹");
         break;
 
       default:
         break;
     }
-  }, [gameStatus]);
+  }, [pageStatus]);
+
+  useEffect(() => {}, [pageStatus]);
 
   return (
     <>
@@ -116,12 +125,20 @@ export default function Home() {
         </div>
 
         <div className={styles.center}>
-          <HomeCenterLayout>{centerComponent}</HomeCenterLayout>
+          <HomeCenterLayout>
+            {pageStatus === "before_login" && (
+              <Login handleButtonClick={handleLoginButtonClick} />
+            )}
+            {pageStatus === "ready_to_game" && (
+              <StartGame handleButtonClick={handleStartGameButtonClick} />
+            )}
+            {pageStatus === "playing_game" && <Game />}
+          </HomeCenterLayout>
         </div>
 
         <div className={styles.grid}>
           <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+            onClick={handleOnClickRankBoard}
             className={styles.card}
             target="_blank"
             rel="noopener noreferrer"
@@ -134,7 +151,7 @@ export default function Home() {
             </p>
           </a>
           <a
-            href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+            onClick={handleOnClickGameHistory}
             className={styles.card}
             target="_blank"
             rel="noopener noreferrer"
@@ -147,14 +164,19 @@ export default function Home() {
             </p>
           </a>
 
-          <a onClick={handleTogglePortfolio} className={styles.card}>
+          <a
+            onClick={handleTogglePortfolio}
+            className={styles.card}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <h2 className={inter.className}>
-              👑 Wallet Profile <span>-&gt;</span>
+              👑 Wallet Portfolio <span>-&gt;</span>
             </h2>
             <p className={inter.className}>Check out coins you earned.</p>
           </a>
           <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+            href="https://wasd3r.xyz/beta"
             className={styles.card}
             target="_blank"
             rel="noopener noreferrer"
